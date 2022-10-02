@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './configuration';
@@ -41,7 +40,6 @@ import AuthMiddleware from './common/middlewares/auth.middleware';
     FriendsModule,
     ProfileModule,
   ],
-  providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): any {
