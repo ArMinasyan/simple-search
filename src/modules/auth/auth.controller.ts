@@ -17,7 +17,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({
-    tags: ['Auth'],
+    tags: ['auth'],
   })
   @ApiConsumes('application/x-www-form-urlencoded')
   @Post('sign-in')
@@ -26,7 +26,7 @@ export class AuthController {
   }
 
   @ApiOperation({
-    tags: ['Auth'],
+    tags: ['auth'],
   })
   @ApiConsumes('application/x-www-form-urlencoded')
   @Post('sign-up')

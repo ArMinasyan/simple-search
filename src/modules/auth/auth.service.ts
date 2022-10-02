@@ -50,6 +50,9 @@ export class AuthService {
     const createdUser = await this.authRepository.save({
       email: payload.email,
       password: passwordHash,
+      first_name: payload.firstName,
+      last_name: payload.lastName,
+      age: payload.age,
     });
 
     const token = await this.jwtService.signAsync({
