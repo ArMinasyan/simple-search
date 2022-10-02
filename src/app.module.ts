@@ -1,11 +1,15 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/Auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersEntity } from './modules/Auth/entities/users.entity';
+import { UsersEntity } from './modules/auth/entities/users.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { FriendsModule } from './modules/friends/friends.module';
+import { FriendsEntity } from './modules/friends/entities/friends.entity';
+import { ProfileModule } from './modules/profile/profile.module';
+import AuthMiddleware from './common/middlewares/auth.middleware';
 
 @Module({
   imports: [
@@ -22,7 +26,7 @@ import { JwtModule } from '@nestjs/jwt';
         type: 'postgres',
         synchronize: configService.get<boolean>('database.sync'),
         logging: configService.get<boolean>('database.logging'),
-        entities: [UsersEntity],
+        entities: [UsersEntity, FriendsEntity],
       }),
     }),
     ConfigModule.forRoot({
@@ -34,22 +38,18 @@ import { JwtModule } from '@nestjs/jwt';
         algorithm: 'HS256',
       },
     }),
+    FriendsModule,
+    ProfileModule,
   ],
   providers: [AppService],
 })
 export class AppModule {
-  // configure(consumer: MiddlewareConsumer): any {
-  //   consumer
-  //     .apply(AuthMiddleware)
-  //     .forRoutes(
-  //       { path: '/workspaces', method: RequestMethod.POST },
-  //       { path: '/workspaces/join', method: RequestMethod.POST },
-  //       { path: '/workspaces/invite', method: RequestMethod.POST },
-  //       { path: '/workspaces/*', method: RequestMethod.PUT },
-  //       { path: '/workspaces/*', method: RequestMethod.PATCH },
-  //       { path: '/workspaces/*/channels', method: RequestMethod.POST },
-  //       { path: '/workspaces/*/channels/*', method: RequestMethod.PUT },
-  //       { path: '/workspaces/*/channels/*', method: RequestMethod.PATCH },
-  //     );
-  // }
+  configure(consumer: MiddlewareConsumer): any {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: '/friends/*', method: RequestMethod.POST },
+        { path: '/friends/list', method: RequestMethod.GET },
+      );
+  }
 }
