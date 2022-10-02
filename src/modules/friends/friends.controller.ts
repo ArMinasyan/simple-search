@@ -15,7 +15,7 @@ export class FriendsController {
     tags: ['friends'],
   })
   @ApiConsumes('application/x-www-form-urlencoded')
-  @Get('list')
+  @Get('request-list')
   requestList(@User() user): Promise<IResponse> {
     return this.friendsService.getRequestList(user.id);
   }

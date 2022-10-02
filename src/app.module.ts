@@ -47,7 +47,7 @@ export class AppModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: '/friends/*', method: RequestMethod.POST },
-        { path: '/friends/list', method: RequestMethod.GET },
+        { path: '/friends/request-list', method: RequestMethod.GET },
       );
   }
 }

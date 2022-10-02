@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { FileTransformer } from '../../common/customValidators';
 
 @Controller('auth')
 export class AuthController {

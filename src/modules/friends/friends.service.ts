@@ -9,16 +9,20 @@ export class FriendsService {
   constructor(private readonly friendsRepository: FriendsRepository) {}
 
   async getRequestList(userId: number): Promise<IResponse> {
-    const requestList = await this.friendsRepository.find({
-      where: {
+    const requestList = await this.friendsRepository
+      .createQueryBuilder('f')
+      .select(`u.first_name, u.last_name, u.email`)
+      .innerJoin('users', 'u', 'u.id = f.requested_from')
+      .where({
         requested_to: userId,
-      },
-    });
+      })
+      .getRawMany();
 
     return responseMessage({
       data: requestList,
     });
   }
+
   async requestStatus(payload: RequestStatusDto): Promise<IResponse> {
     const updatedStatus = await this.friendsRepository.requestStatus(
       payload.accept,
